@@ -40,8 +40,6 @@ function Register() {
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(registerSchema),
@@ -49,9 +47,9 @@ function Register() {
   });
 
   const onSubmit = async (data) => {
+    console.log(data);
     setServerError(null);
     setSuccess(false);
-    clearErrors();
 
     try {
       const response = await axios.post(
@@ -59,86 +57,12 @@ function Register() {
         data
       );
 
+      console.log(response.data);
       setSuccess(true);
       navigate("/login");
     } catch (err) {
       console.log(err.response);
-
-      const apiData = err.response?.data;
-      const apiErrors = apiData?.errors;
-
-      let fieldErrorFound = false;
-      const unmatchedErrors = [];
-
-      const showFieldError = (field, message) => {
-        setError(field, {
-          type: "server",
-          message: String(message),
-        });
-        fieldErrorFound = true;
-      };
-
-      const handleErrorMessage = (message, fieldName = "") => {
-        const text = String(message);
-        const field = fieldName.toLowerCase();
-        const lowerText = text.toLowerCase();
-
-        if (
-          field.includes("password") ||
-          lowerText.includes("password")
-        ) {
-          showFieldError("password", text);
-        } else if (
-          field.includes("email") ||
-          lowerText.includes("email")
-        ) {
-          showFieldError("email", text);
-        } else if (
-          field.includes("username") ||
-          lowerText.includes("username") ||
-          lowerText.includes("user name")
-        ) {
-          showFieldError("userName", text);
-        } else if (
-          field.includes("fullname") ||
-          lowerText.includes("full name")
-        ) {
-          showFieldError("fullName", text);
-        } else if (
-          field.includes("phone") ||
-          lowerText.includes("phone")
-        ) {
-          showFieldError("phoneNumber", text);
-        } else {
-          unmatchedErrors.push(text);
-        }
-      };
-
-      if (Array.isArray(apiErrors)) {
-        apiErrors.forEach((message) => {
-          handleErrorMessage(message);
-        });
-      } else if (apiErrors && typeof apiErrors === "object") {
-        Object.entries(apiErrors).forEach(([field, messages]) => {
-          const list = Array.isArray(messages)
-            ? messages
-            : [messages];
-
-          list.forEach((message) => {
-            handleErrorMessage(message, field);
-          });
-        });
-      } else if (typeof apiErrors === "string") {
-        handleErrorMessage(apiErrors);
-      }
-
-      if (unmatchedErrors.length > 0) {
-        setServerError(unmatchedErrors.join("، "));
-      } else if (!fieldErrorFound) {
-        setServerError(
-          apiData?.message || "Registration Failed"
-        );
-      }
+      setServerError("Registration Failed");
     }
   };
 
@@ -215,7 +139,7 @@ function Register() {
         }}
       />
 
-     
+    
       <Box
         sx={{
           width: { xs: "100%", md: "calc(62% - 30px)" },
@@ -245,7 +169,7 @@ function Register() {
               boxSizing: "border-box",
             }}
           >
-        
+            
             <Box
               sx={{
                 display: "flex",
@@ -285,7 +209,6 @@ function Register() {
               </Typography>
             </Box>
 
-            
             <Typography
               variant="h4"
               component="h1"
@@ -317,13 +240,14 @@ function Register() {
               </Alert>
             )}
 
-         
+          
             {success && (
               <Alert severity="success" sx={{ mb: 2 }}>
                 Registration successful!
               </Alert>
             )}
 
+        
             <Box
               component="form"
               onSubmit={handleSubmit(onSubmit)}
@@ -379,6 +303,7 @@ function Register() {
                 sx={fieldStyle}
               />
 
+        
               <TextField
                 label="Email Address"
                 placeholder="Enter your email address"
@@ -404,7 +329,6 @@ function Register() {
                 sx={fieldStyle}
               />
 
-          
               <TextField
                 label="Password"
                 placeholder="Create password"
@@ -431,6 +355,7 @@ function Register() {
                 sx={fieldStyle}
               />
 
+           
               <TextField
                 label="Phone Number"
                 placeholder="05XXXXXXXX"
@@ -456,7 +381,7 @@ function Register() {
                 sx={fieldStyle}
               />
 
-              
+           
               <FormControlLabel
                 control={
                   <Checkbox
@@ -498,7 +423,6 @@ function Register() {
                 }}
               />
 
-        
               <Button
                 type="submit"
                 variant="contained"
@@ -523,7 +447,7 @@ function Register() {
                   : "Create Account & Claim 15% Off"}
               </Button>
 
-              
+           
               <Divider
                 sx={{
                   my: 2.2,
@@ -537,7 +461,7 @@ function Register() {
                 OR CONTINUE WITH
               </Divider>
 
-          
+      
               <Box
                 sx={{
                   display: "flex",
@@ -586,7 +510,7 @@ function Register() {
                 </Button>
               </Box>
 
-          
+       
               <Typography
                 sx={{
                   textAlign: "center",

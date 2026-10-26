@@ -29,6 +29,7 @@ import {
   Facebook,
 } from "@mui/icons-material";
 
+
 function Login() {
   const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -43,8 +44,7 @@ function Login() {
   });
 
   const onSubmit = async (data) => {
-    setServerError(null);
-    setSuccess(false);
+    console.log(data);
 
     try {
       const response = await axios.post(
@@ -57,17 +57,14 @@ function Login() {
 
       console.log(response.data);
       setSuccess(true);
-    } catch (error) {
-    console.log(error.response?.data);
-      const message = error.response?.data?.message;
-
-if (message === "plz confirm your email;") {
-  setServerError("Please verify your email address before logging in.");
-} else {
-  setServerError(message || "Login failed");
-}
+    } catch (err) {
+      console.log(err.response);
+      setServerError("Login Failed");
     }
   };
+
+ 
+
 
   return (
     <Box

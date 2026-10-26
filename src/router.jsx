@@ -7,6 +7,7 @@ import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import SendCode from "./pages/SendCode";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/send-code",
+        element: <SendCode />,
       },
     ],
   },

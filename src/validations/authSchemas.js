@@ -38,3 +38,10 @@ export const registerSchema = yup.object({
     .string()
     .required("Phone number is required"),
 });
+
+export const sendCodeSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is Required")
+    .email("Invalid Email Format"),
+});

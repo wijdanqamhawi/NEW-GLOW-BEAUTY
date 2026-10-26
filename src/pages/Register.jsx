@@ -46,25 +46,32 @@ function Register() {
     mode: "onBlur",
   });
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    setServerError(null);
-    setSuccess(false);
+ 
+const onSubmit = async (data) => {
+  console.log(data);
 
-    try {
-      const response = await axios.post(
-        "https://knowledgeshop.runasp.net/api/auth/Account/Register",
-        data
-      );
+  setServerError(null);
+  setSuccess(false);
 
-      console.log(response.data);
-      setSuccess(true);
-      navigate("/login");
-    } catch (err) {
-      console.log(err.response);
-      setServerError("Registration Failed");
-    }
-  };
+  try {
+    const response = await axios.post(
+      "https://knowledgeshop.runasp.net/api/auth/Account/Register",
+      data
+    );
+
+    console.log(response.data);
+    setSuccess(true);
+    navigate("/login");
+
+  } catch (err) {
+  console.log(err.response);
+
+  setServerError(
+    err.response?.data?.errors?.join(" ") || "Registration Failed"
+  );
+}
+};
+
 
   const fieldStyle = {
     mb: 1.3,

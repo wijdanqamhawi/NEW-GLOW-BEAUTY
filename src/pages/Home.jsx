@@ -1,5 +1,6 @@
 
 import { Box, Typography } from "@mui/material";
+import Categories from "../components/Categories";
 
 function Home() {
   return (
@@ -23,6 +24,8 @@ function Home() {
       <Typography sx={{ mt: 2, color: "#8C6D7C" }}>
         Discover your favorite beauty products.
       </Typography>
+
+      <Categories />
     </Box>
   );
 }

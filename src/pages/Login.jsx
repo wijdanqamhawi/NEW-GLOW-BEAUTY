@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -29,10 +29,11 @@ import {
   Facebook,
 } from "@mui/icons-material";
 
-
 function Login() {
   const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -44,7 +45,8 @@ function Login() {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setServerError(null);
+    setSuccess(false);
 
     try {
       const response = await axios.post(
@@ -55,16 +57,31 @@ function Login() {
         }
       );
 
-      console.log(response.data);
+      console.log("Login Response:", response.data);
+
+      if (response.data?.success === false) {
+        setServerError(
+          response.data?.message || "Login Failed"
+        );
+        return;
+      }
+
       setSuccess(true);
+      navigate("/home");
+
     } catch (err) {
-      console.log(err.response);
-      setServerError("Login Failed");
+      console.log("Login Error:", err.response?.data);
+
+      const message = err.response?.data?.message;
+      const errors = err.response?.data?.errors;
+
+      setServerError(
+        message ||
+        (Array.isArray(errors) ? errors.join(" ") : null) ||
+        "Login Failed"
+      );
     }
   };
-
- 
-
 
   return (
     <Box
@@ -79,7 +96,6 @@ function Login() {
         boxSizing: "border-box",
       }}
     >
-     
       <Box
         sx={{
           width: { md: "38%" },
@@ -97,7 +113,6 @@ function Login() {
         }}
       />
 
-  
       <Box
         sx={{
           width: { xs: "100%", md: "calc(62% - 30px)" },
@@ -128,7 +143,6 @@ function Login() {
             width: "100%",
           }}
         >
-     
           <Box
             sx={{
               backgroundColor: "white",
@@ -141,7 +155,6 @@ function Login() {
               boxSizing: "border-box",
             }}
           >
-    
             <Box sx={{ textAlign: "center", mb: 2 }}>
               <Box
                 sx={{
@@ -208,8 +221,10 @@ function Login() {
               </Alert>
             )}
 
-            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-           
+            <Box
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <TextField
                 label="EMAIL ADDRESS"
                 placeholder="Enter your email address"
@@ -243,7 +258,6 @@ function Login() {
                 }}
               />
 
-           
               <TextField
                 label="PASSWORD"
                 placeholder="Enter your password"
@@ -278,7 +292,6 @@ function Login() {
                 }}
               />
 
-         
               <Box
                 sx={{
                   display: "flex",
@@ -322,7 +335,6 @@ function Login() {
                 </Button>
               </Box>
 
-     
               <Button
                 type="submit"
                 variant="contained"
@@ -424,9 +436,6 @@ function Login() {
               </Typography>
             </Box>
           </Box>
-
-          
-          
         </Container>
       </Box>
     </Box>

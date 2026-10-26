@@ -45,3 +45,18 @@ export const sendCodeSchema = yup.object({
     .required("Email is Required")
     .email("Invalid Email Format"),
 });
+export const resetPasswordSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is Required")
+    .email("Invalid Email Format"),
+
+  code: yup
+    .string()
+    .required("Verification Code is Required"),
+
+  newPassword: yup
+    .string()
+    .required("New Password is Required")
+    .min(6, "Password must be at least 6 characters"),
+});

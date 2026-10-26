@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -25,6 +25,8 @@ import {
 } from "@mui/icons-material";
 
 function SendCode() {
+  const navigate = useNavigate();
+
   const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
 
@@ -37,30 +39,31 @@ function SendCode() {
     mode: "onBlur",
   });
 
-  
-const onSubmit = async (data) => {
-  console.log(data);
+  const onSubmit = async (data) => {
+    setServerError(null);
+    setSuccess(false);
 
-  setServerError(null);
-  setSuccess(false);
+    try {
+      const response = await axios.post(
+        "https://knowledgeshop.runasp.net/api/auth/Account/SendCode",
+        data
+      );
 
-  try {
-    const response = await axios.post(
-      "https://knowledgeshop.runasp.net/api/auth/Account/SendCode",
-      data
-    );
+      console.log(response.data);
+      setSuccess(true);
 
-    console.log(response.data);
-    setSuccess(true);
+      navigate("/reset-password", {
+        state: { email: data.email },
+      });
 
-  } catch (err) {
-    console.log(err.response);
-    setServerError(
-      "Unable to send verification code. Please check your email and try again."
-    );
-  }
-};
+    } catch (err) {
+      console.log(err.response);
 
+      setServerError(
+        "Unable to send verification code. Please check your email and try again."
+      );
+    }
+  };
 
   return (
     <Box
@@ -73,7 +76,6 @@ const onSubmit = async (data) => {
         overflowX: "hidden",
       }}
     >
-    
       <Box
         sx={{
           width: { md: "38%" },
@@ -113,7 +115,6 @@ const onSubmit = async (data) => {
               mx: "auto",
             }}
           >
-         
             <Box sx={{ textAlign: "center", mb: 2 }}>
               <SpaOutlined
                 sx={{

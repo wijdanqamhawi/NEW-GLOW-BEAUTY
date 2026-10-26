@@ -56,8 +56,10 @@ export default function Categories() {
     queryKey: ["categories"],
     queryFn: getCategories,
     staleTime: 1000 * 60 * 5,
+    
   });
-
+  
+console.log(data);
   const scrollCategories = (direction) => {
     scrollRef.current?.scrollBy({
       left: direction * 240,
@@ -73,8 +75,6 @@ export default function Categories() {
         Failed to load categories.
       </Alert>
     );
-
-  console.log(data);
 
   return (
     <Box sx={{ mt: 7, width: "100%" }}>

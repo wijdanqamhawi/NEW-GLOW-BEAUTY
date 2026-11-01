@@ -1,6 +1,7 @@
 
 import { Box, Typography } from "@mui/material";
 import Categories from "../components/Categories";
+import Products from "../components/Products";
 
 function Home() {
   return (
@@ -26,6 +27,7 @@ function Home() {
       </Typography>
 
       <Categories />
+      <Products />
     </Box>
   );
 }

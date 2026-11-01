@@ -1,7 +1,6 @@
-
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
+import CategoryItem from "./CategoryItem";
 
 export default function CategoriesUI({ categories }) {
   return (
@@ -10,18 +9,11 @@ export default function CategoriesUI({ categories }) {
         Categories
       </Typography>
 
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          flexWrap: "wrap",
-        }}
-      >
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         {categories.map((category) => (
-          <Chip
+          <CategoryItem
             key={category.id}
-            label={category.name}
-            clickable
+            category={category}
           />
         ))}
       </Box>

@@ -1,5 +1,6 @@
 
 import { useParams } from "react-router-dom";
+import ReviewItem from "../components/ReviewItem";
 
 import {
   Box,
@@ -33,6 +34,7 @@ export default function ProductDetails() {
   }
 
   const product = data?.data ?? data;
+  
 
   if (!product) {
     return <Alert severity="warning">Product not found.</Alert>;
@@ -47,7 +49,11 @@ export default function ProductDetails() {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={5} alignItems="center">
+       <Grid
+  container
+  spacing={5}
+  sx={{ alignItems: "center" }}
+>
 
           <Grid size={{ xs: 12, md: 6 }}>
             <Box
@@ -127,6 +133,35 @@ export default function ProductDetails() {
           </Grid>
 
         </Grid>
+
+        {/* Customer Reviews */}
+        <Box sx={{ mt: 6 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 3,
+              color: "#33232B",
+              fontWeight: 700,
+            }}
+          >
+            Customer Reviews
+          </Typography>
+
+          {Array.isArray(product.reviews) &&
+          product.reviews.length > 0 ? (
+            product.reviews.map((review, index) => (
+              <ReviewItem
+                key={review.id ?? index}
+                review={review}
+              />
+            ))
+          ) : (
+            <Typography sx={{ color: "#8C6D7C" }}>
+              No reviews yet.
+            </Typography>
+          )}
+        </Box>
+
       </Container>
     </Box>
   );

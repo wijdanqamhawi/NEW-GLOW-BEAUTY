@@ -1,14 +1,13 @@
 
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import SendCode from "./pages/SendCode";
 import ResetPassword from "./pages/ResetPassword";
+import ProductDetails from "./pages/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -36,15 +35,22 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/home",
-        element: <Home />,
-      },
-    ],
-  },
+  
+    
+{
+  element: <MainLayout />,
+  children: [
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "/products/:id",
+      element: <ProductDetails />,
+    },
+  ],
+},
+
 ]);
 
 export default router;

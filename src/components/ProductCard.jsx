@@ -5,6 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   return (
@@ -15,7 +16,10 @@ export default function ProductCard({ product }) {
         height: "100%",
       }}
     >
-      <CardActionArea>
+      <CardActionArea
+        component={Link}
+        to={`/products/${product.id}`}
+      >
         <CardMedia
           component="img"
           image={product.image}

@@ -1,6 +1,4 @@
 
-import { useState } from "react";
-
 import {
   Typography,
   Rating,
@@ -8,10 +6,6 @@ import {
 } from "@mui/material";
 
 export default function ProductInfo({ product }) {
-  const [rating, setRating] = useState(
-    Number(product.rate ?? product.rating ?? 0)
-  );
-
   return (
     <>
       <Typography
@@ -26,10 +20,8 @@ export default function ProductInfo({ product }) {
       </Typography>
 
       <Rating
-        value={rating}
-        onChange={(event, newValue) => {
-          setRating(newValue);
-        }}
+        value={Number(product.rate ?? product.rating ?? 0)}
+        readOnly
         sx={{ mb: 2 }}
       />
 

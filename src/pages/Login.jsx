@@ -57,8 +57,6 @@ function Login() {
         }
       );
 
-      console.log("Login Response:", response.data);
-
       if (response.data?.success === false) {
         setServerError(
           response.data?.message || "Login Failed"
@@ -66,18 +64,27 @@ function Login() {
         return;
       }
 
+      const token = response.data?.accessToken;
+
+      if (!token) {
+        setServerError("Access token not found");
+        return;
+      }
+
+      localStorage.setItem("token", token);
+
       setSuccess(true);
       navigate("/home");
 
     } catch (err) {
-      console.log("Login Error:", err.response?.data);
-
       const message = err.response?.data?.message;
-      const errors = err.response?.data?.errors;
+      const responseErrors = err.response?.data?.errors;
 
       setServerError(
         message ||
-        (Array.isArray(errors) ? errors.join(" ") : null) ||
+        (Array.isArray(responseErrors)
+          ? responseErrors.join(" ")
+          : null) ||
         "Login Failed"
       );
     }

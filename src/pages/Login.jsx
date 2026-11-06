@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,6 +34,8 @@ function Login() {
   const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  const { token, setToken } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const {
@@ -64,18 +67,18 @@ function Login() {
         return;
       }
 
-      const token = response.data?.accessToken;
+      const newToken = response.data?.accessToken;
 
-      if (!token) {
+      if (!newToken) {
         setServerError("Access token not found");
         return;
       }
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", newToken);
+      setToken(newToken);
 
       setSuccess(true);
       navigate("/home");
-
     } catch (err) {
       const message = err.response?.data?.message;
       const responseErrors = err.response?.data?.errors;

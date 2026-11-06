@@ -1,4 +1,6 @@
 
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -9,10 +11,11 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  const { token, setToken } = useContext(AuthContext);
 
   const Logout = () => {
     localStorage.removeItem("token");
+    setToken(null);
     navigate("/login");
   };
 
@@ -47,70 +50,39 @@ export default function Navbar() {
             justifyContent: "flex-end",
           }}
         >
-          <Button
-            color="inherit"
-            component={Link}
-            to="/home"
-          >
+          <Button color="inherit" component={Link} to="/home">
             Home
           </Button>
 
-          <Button
-            color="inherit"
-            component={Link}
-            to="/categories"
-          >
+          <Button color="inherit" component={Link} to="/categories">
             Categories
           </Button>
 
-          <Button
-            color="inherit"
-            component={Link}
-            to="/products"
-          >
+          <Button color="inherit" component={Link} to="/products">
             All Products
           </Button>
 
           {token ? (
             <>
-              <Button
-                color="inherit"
-                component={Link}
-                to="/cart"
-              >
+              <Button color="inherit" component={Link} to="/cart">
                 Cart
               </Button>
 
-              <Button
-                color="inherit"
-                component={Link}
-                to="/profile"
-              >
+              <Button color="inherit" component={Link} to="/profile">
                 Profile
               </Button>
 
-              <Button
-                color="inherit"
-                onClick={Logout}
-              >
+              <Button color="inherit" onClick={Logout}>
                 Logout
               </Button>
             </>
           ) : (
             <>
-              <Button
-                color="inherit"
-                component={Link}
-                to="/login"
-              >
+              <Button color="inherit" component={Link} to="/login">
                 Login
               </Button>
 
-              <Button
-                color="inherit"
-                component={Link}
-                to="/register"
-              >
+              <Button color="inherit" component={Link} to="/register">
                 Register
               </Button>
             </>

@@ -1,6 +1,5 @@
 
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,11 +10,11 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const { token, setToken } = useContext(AuthContext);
+  const token = useAuthStore((state) => state.token);
+const logout = useAuthStore((state) => state.logout);
 
   const Logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
+    logout();
     navigate("/login");
   };
 

@@ -1,12 +1,11 @@
 
 import { Box, Typography, Alert } from "@mui/material";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
 import Categories from "../components/Categories";
 import Products from "../components/Products";
 
 function Home() {
-  const { token } = useContext(AuthContext);
+  const token = useAuthStore((state) => state.token);
 
   return (
     <Box
@@ -16,13 +15,11 @@ function Home() {
         p: 5,
       }}
     >
-      {token ? (
-        <Alert severity="success">
-          Welcome Back!
-        </Alert>
-      ) : (
-        ""
-      )}
+     {token ? (
+  <Alert severity="success">
+    Welcome Back!
+  </Alert>
+) : null}
 
       <Typography
         variant="h4"

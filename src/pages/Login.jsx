@@ -1,6 +1,5 @@
-
-import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
+import { useAuthStore } from "../store/useAuthStore";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,7 +33,7 @@ function Login() {
   const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const { token, setToken } = useContext(AuthContext);
+  const login = useAuthStore((state) => state.login);
 
   const navigate = useNavigate();
 
@@ -74,8 +73,7 @@ function Login() {
         return;
       }
 
-      localStorage.setItem("token", newToken);
-      setToken(newToken);
+      login(newToken);
 
       setSuccess(true);
       navigate("/home");

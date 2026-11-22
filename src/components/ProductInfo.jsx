@@ -5,7 +5,39 @@ import {
   Button,
 } from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
+import useAddToCart from "../hooks/useAddToCart";
+import { toast } from "react-toastify";
+
 export default function ProductInfo({ product }) {
+  const token = useAuthStore((state) => state.token);
+
+  const navigate = useNavigate();
+
+  const {
+    mutate: addToCart,
+    isPending: addToCartPending,
+  } = useAddToCart();
+
+ const handleAddToCart = () => {
+  if (!token) {
+    toast.error("Please login first!");
+    navigate("/login");
+    return;
+  }
+
+  addToCart(product.id, {
+    onSuccess: () => {
+      toast.success("Product added to cart successfully!");
+    },
+
+    onError: () => {
+      toast.error("Failed to add product!");
+    },
+  });
+};
+
   return (
     <>
       <Typography
@@ -48,6 +80,8 @@ export default function ProductInfo({ product }) {
 
       <Button
         variant="contained"
+        onClick={handleAddToCart}
+        disabled={addToCartPending}
         sx={{
           backgroundColor: "#B85C83",
           borderRadius: "30px",
@@ -59,7 +93,7 @@ export default function ProductInfo({ product }) {
           },
         }}
       >
-        Add to Cart
+        {addToCartPending ? "Adding..." : "Add to Cart"}
       </Button>
     </>
   );

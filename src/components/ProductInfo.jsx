@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import useAddToCart from "../hooks/useAddToCart";
-import { toast } from "react-toastify";
+import { toast,Slide } from "react-toastify";
 
 export default function ProductInfo({ product }) {
   const token = useAuthStore((state) => state.token);
@@ -22,18 +22,43 @@ export default function ProductInfo({ product }) {
 
  const handleAddToCart = () => {
   if (!token) {
-    toast.error("Please login first!");
-    navigate("/login");
-    return;
-  }
+  toast.error("Please login first!", {
+    position: "top-right",
+    autoClose: 5000,
+    theme: "dark",
+    transition: Slide,
+  });
 
+  navigate("/login");
+  return;
+}
   addToCart(product.id, {
-    onSuccess: () => {
-      toast.success("Product added to cart successfully!");
-    },
+   onSuccess: () => {
+  toast.success("Product added to cart successfully!", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Slide,
+  });
+},
 
     onError: () => {
-      toast.error("Failed to add product!");
+      toast.error("Failed to add product!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
     },
   });
 };
